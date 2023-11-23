@@ -20,10 +20,13 @@ module.exports = {
             url: process.env.SEPOLIA_RPC_URL,
             accounts: [process.env.PRIVATE_KEY],
             chainId: 11155111,
+            blockConfirmations: 6,
+
         },
         local: {
             url: "http://127.0.0.1:8545/",
             chainId: 31337,
+            blockConfirmations: 1,
         },
     },
     solidity: {

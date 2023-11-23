@@ -1,21 +1,26 @@
 const { network } = require("hardhat")
 const { developmentChains } = require("../helper-hardhat-config")
 
-const DECIMALS = 8
-//const DECIMALS_BIG = ethers.BigNumber.from(DECIMALS.toString());
-const INITIAL_ANSWER = 200000000000
-//const INITIAL_ANSWER_BIG = ethers.BigNumber.from(INITIAL_ANSWER.toString());
+const BASE_FEE= ethers.parseEther("0.25")
+const GAS_PRICE_LINK= 1e9
+
 module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
+    const artifact = require('../artifacts/@chainlink/contracts/src/v0.8/mocks/VRFCoordinatorV2Mock.sol/VRFCoordinatorV2Mock.json');
+    let vrfCoordinatorV2Address
 
     if (developmentChains.includes(network.name)) {
         //log("local network detected.deploying mocks")
-        const mock = await deploy("MockV3Aggregator", {
-            contract: "MockV3Aggregator",
+        args = [BASE_FEE,GAS_PRICE_LINK]
+        const mock = await deploy('VRFCoordinatorV2Mock', {
+            contract: {
+                abi: artifact.abi,
+                bytecode: artifact.bytecode
+            },
             from: deployer,
             log: true,
-            args: [DECIMALS, INITIAL_ANSWER],
+            args: args,
         })
         //log("Mock Deployed...")
         //log("--------------------------------")

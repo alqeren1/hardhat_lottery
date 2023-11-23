@@ -25,6 +25,8 @@ contract Raffle is
         OPEN,
         CALCULATING
     }
+    // "0" is open, "1" is closed
+
     /* state variables */
 
     mapping(uint256 => RequestStatus) public s_requests;
@@ -143,18 +145,6 @@ contract Raffle is
         emit WinnerPicked(recentWinner);
     }
 
-    function getRecentWinner() public view returns (address) {
-        return s_recentWinner;
-    }
-
-    function getEntranceFee() public view returns (uint256) {
-        return i_entranceFee;
-    }
-
-    function getPlayer(uint256 index) public view returns (address) {
-        return s_players[index];
-    }
-
     function checkUpkeep(
         bytes memory /* checkData */
     )
@@ -189,5 +179,21 @@ contract Raffle is
 
     function getWordNumber() public pure returns (uint256) {
         return NUM_WORDS;
+    }
+
+    function getInterval() public view returns (uint256) {
+        return i_interval;
+    }
+
+    function getRecentWinner() public view returns (address) {
+        return s_recentWinner;
+    }
+
+    function getEntranceFee() public view returns (uint256) {
+        return i_entranceFee;
+    }
+
+    function getPlayer(uint256 index) public view returns (address) {
+        return s_players[index];
     }
 }
