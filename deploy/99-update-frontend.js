@@ -1,19 +1,22 @@
-const { ethers } = require("hardhat");
+const { ethers, deployments, network } = require("hardhat");
 const fs = require("fs");
+
 const FRONTEND_ADDRESSES_FILE = "../nextjs/constants/contractAddresses.json";
 const FRONTEND_ABI_FILE = "../nextjs/constants/abi.json";
+
 module.exports = async function () {
   if (process.env.UPDATE_FRONTEND) {
     console.log("Updating frontend...");
-    updateContractAddresses();
-    updateContractABI();
+    await updateContractAddresses();
+    await updateContractABI();
   }
 };
+
 async function updateContractABI() {
-  const raffle = await ethers.getContract("Raffle");
+  const raffleArtifact = await artifacts.readArtifact("Raffle");
   fs.writeFileSync(
     FRONTEND_ABI_FILE,
-    JSON.stringify(raffle.interface.format("json"))
+    JSON.stringify(raffleArtifact.abi, null, 2)
   );
 }
 
